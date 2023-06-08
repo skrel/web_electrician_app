@@ -14,11 +14,6 @@ import React, { useState, useEffect } from 'react'
 function ProjectPage() {
 
     const router = useRouter()
-    // const data = router.query
-    // const projNameToDisplay = JSON.stringify(data.projname)
-    // const projectId = JSON.stringify(data.projid)
-    // const projectIdsub = projectId.substring(1, 21)
-    // const itemsToDisplay = JSON.parse(data.items)
 
     const [data, setData] = useState()
     const [projNameToDisplay, setProjNameToDisplay] = useState()
@@ -26,10 +21,8 @@ function ProjectPage() {
     const [projectIdsub, setProjectIdsub] = useState()
     const [itemsToDisplay, setItemsToDisplay] = useState([])
 
-    //
     useEffect(() => {
         if (!router.isReady) return;
-
         setData(router.query)
         setProjNameToDisplay(JSON.stringify(router.query.projname))
         setProjectId(JSON.stringify(router.query.projid))
@@ -37,19 +30,10 @@ function ProjectPage() {
         setItemsToDisplay(JSON.parse(router.query.items))
 
     }, [router.isReady]);
-    //
-
 
     const [showModal, setShowModal] = useState(false)
     const [newItemName, setNewItemName] = useState('')
     const [newItemPurpose, setNewItemPurpose] = useState('')
-
-
-
-
-
-
-
 
     const AddItem = () => {
         return (
@@ -64,9 +48,9 @@ function ProjectPage() {
                 </div>
 
                 {showModal ? (
-                    <div className={styles.modal}>
-                        <div>
-
+                    <div className={styles.modalOutside}>
+                        <div className={styles.modalInside}>
+                            <h2>Create New Item</h2><br />
                             <input
                                 type='text'
                                 name='itemname'
@@ -97,10 +81,12 @@ function ProjectPage() {
                             // value={password}
                             />
 
+                            <br />
+                            <button onClick={handleSaveItemToFirebase}>Add</button>
+                            <button onClick={() => setShowModal(false)}>Close</button>
 
                         </div>
-                        <button onClick={() => setShowModal(false)}>Close</button>
-                        <button onClick={handleSaveItemToFirebase}>Add</button>
+
                     </div>
                 ) : null}
             </div>
@@ -109,15 +95,34 @@ function ProjectPage() {
     }
 
     const handleSaveItemToFirebase = () => {
-        console.log('button pressed;')
-        console.log('projectIdsub = ', projectIdsub)
-        console.log('itemsToDisplay = ', itemsToDisplay)
-        console.log('newItemName = ', newItemName)
+        console.log('save new item button pressed;')
         database.collection('users').doc(projectIdsub).update({
-            // TODO get item data from a modal
             projects: [...itemsToDisplay, { "name": newItemName, "purpose": newItemPurpose }]
         })
+    }
 
+    const handleDeleteAllItemsFromFirebase = () => {
+        console.log('delete all items button pressed;')
+        database.collection('users').doc(projectIdsub).update({
+            projects: []
+        })
+    }
+
+    const handleDeleteItemFromFirebase = ({item}) => {
+        console.log('delete specific item button pressed;')
+        // need to assemble the new array with items
+        let newItemArray = []
+        console.log('my item that i am passing thru = ', item)
+        // for(var i = 0; i < projectItems.length; i++) {
+        //     var object = projectItems[i]
+        //     if(object.key+1 !== item.key) {
+        //         newItemArray.push(object)
+        //     }
+        // }
+
+        // database.collection('users').doc(projectIdsub).update({
+        //     projects: [...newItemArray]
+        // })
     }
 
     let projectItems = []
@@ -160,6 +165,7 @@ function ProjectPage() {
                             >
                                 Edit
                             </Link>
+                            <button onClick={handleDeleteItemFromFirebase(item)}>Delete</button>
                             <br /><br />
                         </div>
                     )
@@ -169,13 +175,11 @@ function ProjectPage() {
             </div>
             <br />
             <Link href="/MyProfile"> Back </Link>
-            {/* <button onClick={handleSaveItemToFirebase}>Add Item To Project</button> */}
-
+            <button onClick={handleDeleteAllItemsFromFirebase}>Delete All Items</button>
             <AddItem />
         </div>
 
     )
-
 }
 
 export default ProjectPage
