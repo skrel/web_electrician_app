@@ -20,6 +20,8 @@ function ProjectPage() {
     const [projectId, setProjectId] = useState()
     const [projectIdsub, setProjectIdsub] = useState()
     const [itemsToDisplay, setItemsToDisplay] = useState([])
+    const naImage = 'https://skrel.github.io/jsonapi/public/image/na.png';
+    const [editProjName, setEditProjName] = useState(false)
 
     useEffect(() => {
         if (!router.isReady) return;
@@ -70,6 +72,7 @@ function ProjectPage() {
                                 type='text'
                                 name='itemqty'
                                 placeholder='Enter qty'
+                            // disabled={true}
                             // onChange={(event) => setPassword(event.target.value)}
                             // value={password}
                             />
@@ -97,7 +100,7 @@ function ProjectPage() {
     const handleSaveItemToFirebase = () => {
         console.log('save new item button pressed;')
         database.collection('users').doc(projectIdsub).update({
-            projects: [...itemsToDisplay, { "name": newItemName, "purpose": newItemPurpose }]
+            projects: [...itemsToDisplay, { "name": newItemName, "purpose": newItemPurpose, "qty": 1, "price": 0.01, "image": naImage }]
         })
     }
 
@@ -108,21 +111,31 @@ function ProjectPage() {
         })
     }
 
-    const handleDeleteItemFromFirebase = ({item}) => {
+    const handleDeleteItemFromFirebase = (item) => {
         console.log('delete specific item button pressed;')
         // need to assemble the new array with items
         let newItemArray = []
         console.log('my item that i am passing thru = ', item)
-        // for(var i = 0; i < projectItems.length; i++) {
-        //     var object = projectItems[i]
-        //     if(object.key+1 !== item.key) {
-        //         newItemArray.push(object)
-        //     }
-        // }
+        for (var i = 0; i < projectItems.length; i++) {
+            var object = projectItems[i]
+            if (object.key + 1 !== item.key) {
+                newItemArray.push(object)
+            }
+        }
 
-        // database.collection('users').doc(projectIdsub).update({
-        //     projects: [...newItemArray]
-        // })
+        database.collection('users').doc(projectIdsub).update({
+            projects: [...newItemArray]
+        })
+    }
+
+    const editProjectName = () => {
+        console.log('edit proj name button pressed;')
+        setEditProjName(true)
+    }
+
+    const saveProjectName = () => {
+        console.log('save proj name button pressed;')
+        
     }
 
     let projectItems = []
@@ -143,7 +156,16 @@ function ProjectPage() {
     return (
         <div>
             <h1>Project Page</h1>
-            <p>Project Name: {projNameToDisplay}</p>
+            <label>Project Name: </label>
+            <input
+                type='text'
+                name='projectname'
+                disabled={editProjName ? false : true}
+                // onChange={(event) => setPassword(event.target.value)}
+                value={projNameToDisplay}
+            />
+            <button onClick={editProjectName}>Edit</button>
+            <button style={{display: editProjName ? "block" : "none"}} onClick={saveProjectName}>Save</button>
             <br />
             <div>
                 {projectItems.map(item => {
@@ -165,7 +187,7 @@ function ProjectPage() {
                             >
                                 Edit
                             </Link>
-                            <button onClick={handleDeleteItemFromFirebase(item)}>Delete</button>
+                            <button onClick={() => handleDeleteItemFromFirebase(item)}>Delete</button>
                             <br /><br />
                         </div>
                     )
