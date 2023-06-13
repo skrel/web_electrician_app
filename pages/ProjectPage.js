@@ -22,6 +22,7 @@ function ProjectPage() {
     const [itemsToDisplay, setItemsToDisplay] = useState([])
     const naImage = 'https://skrel.github.io/jsonapi/public/image/na.png';
     const [editProjName, setEditProjName] = useState(false)
+    const [newProjectName, setNewProjectName] = useState("")
 
     useEffect(() => {
         if (!router.isReady) return;
@@ -133,9 +134,17 @@ function ProjectPage() {
         setEditProjName(true)
     }
 
+    const cancelProjectNameChange = () => {
+        console.log('cancel proj name change button pressed;')
+        setEditProjName(false)
+    }
+
     const saveProjectName = () => {
         console.log('save proj name button pressed;')
-        
+        // TODO: check if this name exist
+        database.collection('users').doc(projectIdsub).update({
+            name: newProjectName
+        })
     }
 
     let projectItems = []
@@ -153,19 +162,77 @@ function ProjectPage() {
     }
     // console.log('my items in this project = ', projectItems)
 
+    // build array of arrays for downloads
+    let projectItemsToDownload = [["name", "qty", "purpose", "price"]]
+    for (var i = 0; i < itemsToDisplay.length; i++) {
+        var object = itemsToDisplay[i]
+        const itemToDownload = [
+            object.name,
+            object.qty,
+            object.purpose,
+            object.price
+        ]
+        projectItemsToDownload.push(itemToDownload)
+    }
+    // console.log(projectItemsToDownload)
+
+    let csv = arrayToCsv(projectItemsToDownload)
+
+    /** Convert a 2D array into a CSV string
+ */
+    function arrayToCsv() {
+        console.log('@@@ download button was pressed')
+        console.log(projectItemsToDownload)
+
+        return projectItemsToDownload.map(row =>
+            row
+                .map(String)  // convert every value to String
+                .map(v => v.replaceAll('"', '""'))  // escape double colons
+                .map(v => `"${v}"`)  // quote it
+                .join(',')  // comma-separated
+        ).join('\r\n');  // rows starting on new lines
+    }
+
+    /** Download contents as a file
+   * Source: https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
+   */
+    function downloadBlob() {
+        let filename = 'Electrician_Export.csv'
+        let contentType = 'text/csv;charset=utf-8;'
+        // Create a blob
+        var blob = new Blob([csv], { type: contentType });
+        var url = URL.createObjectURL(blob);
+
+        // Create a link to download it
+        var pom = document.createElement('a');
+        pom.href = url;
+        pom.setAttribute('download', filename);
+        pom.click();
+    }
+
     return (
         <div>
             <h1>Project Page</h1>
+
             <label>Project Name: </label>
             <input
                 type='text'
                 name='projectname'
-                disabled={editProjName ? false : true}
-                // onChange={(event) => setPassword(event.target.value)}
+                disabled={true}
+                // onChange={(event) => setNewProjectName(event.target.value)}
                 value={projNameToDisplay}
             />
-            <button onClick={editProjectName}>Edit</button>
-            <button style={{display: editProjName ? "block" : "none"}} onClick={saveProjectName}>Save</button>
+            <button style={{ display: editProjName ? "none" : "block" }} onClick={editProjectName}>Edit</button>
+            <input
+                type={editProjName ? 'text' : 'hidden'}
+                name='newprojectname'
+                placeholder='Enter new project name'
+                onChange={(event) => setNewProjectName(event.target.value)}
+                value={newProjectName}
+            />
+            <button style={{ display: editProjName ? "block" : "none" }} onClick={saveProjectName}>Save</button>
+            <button style={{ display: editProjName ? "block" : "none" }} onClick={cancelProjectNameChange}>Cancel Change</button>
+
             <br />
             <div>
                 {projectItems.map(item => {
@@ -198,6 +265,7 @@ function ProjectPage() {
             <br />
             <Link href="/MyProfile"> Back </Link>
             <button onClick={handleDeleteAllItemsFromFirebase}>Delete All Items</button>
+            <button onClick={downloadBlob}>Download *.csv</button>
             <AddItem />
         </div>
 

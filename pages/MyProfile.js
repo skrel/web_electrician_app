@@ -30,7 +30,7 @@ function MyProfile() {
         console.log('create new project was pressed')
           const data = {
             userId: auth.currentUser.uid,
-            name: "dummyProject",
+            name: "ProjectName1",
             projects: []
           }
           await database.collection('users').add(data);
