@@ -10,8 +10,10 @@ import { useRouter } from 'next/router'
 
 const Start = () => {
 
-    const [username, setUsername] = useState("krel.svyatoslav@gmail.com")
-    const [password, setPassword] = useState("Password1")
+    // const [username, setUsername] = useState("krel.svyatoslav@gmail.com")
+    // const [password, setPassword] = useState("Password1")
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
     const router = useRouter()
 
     useEffect(() => {
@@ -41,27 +43,68 @@ const Start = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={signIn}>
-                <input
-                    type='text'
-                    name='username'
-                    placeholder='username'
-                    onChange={(event) => setUsername(event.target.value)}
-                    value={username}
-                />
-                <input
-                    type='text'
-                    name='password'
-                    // TODO: how to secure the password entry
-                    // secureTextEntry={true}
-                    placeholder='password'
-                    onChange={(event) => setPassword(event.target.value)}
-                    value={password}
-                />
-                <button type='submit'>Login</button>
-            </form>
+        <div className={styles.container}>
+            <div className={styles.logincontainer}>
+                <form onSubmit={signIn}>
+                    <label style={{ color: 'white', fontStyle: 'italic' }}>Email</label>
+                    <div>
+                        <input
+                            style={{
+                                width: "300px",
+                                height: "50px",
+                                paddingLeft: "10px",
+                                paddingTop: "5px",
+                                border: "none",
+                            }}
+                            type='text'
+                            name='username'
+                            placeholder='email'
+                            onChange={(event) => setUsername(event.target.value)}
+                            value={username}
+                            required
+                        />
+                    </div>
+                    <br />
+                    <label style={{ color: 'white', fontStyle: 'italic' }}>Password</label>
+                    <div>
+                        <input
+                            style={{
+                                width: "300px",
+                                height: "50px",
+                                paddingLeft: "10px",
+                                paddingTop: "5px",
+                                border: "none",
+                            }}
+                            type='password'
+                            name='password'
+                            // TODO: how to secure the password entry
+                            // secureTextEntry={true}
+                            placeholder='password'
+                            onChange={(event) => setPassword(event.target.value)}
+                            value={password}
+                            required
+                        />
+                    </div>
+                    <br />
+
+                    <button style={{
+                        width: "100px",
+                        height: "50px",
+                        borderColor: "white",
+                        paddingLeft: "10px",
+                        paddingTop: "5px",
+                        backgroundColor: "black",
+                        marginLeft: "20px",
+                        color: "white",
+                    }} type='submit'>Login</button>
+
+                    <p style={{ color: 'white', fontStyle: 'italic' }}>Download the app to register: <Link style={{ color: 'yellow'}} href={'https://lnkd.in/eSYF_DfE'} >Android</Link> or <Link style={{ color: 'yellow'}} href={'https://lnkd.in/eWrbYYtc'} >iOS</Link></p>
+
+
+                </form>
+            </div>
         </div>
+
 
     )
 }

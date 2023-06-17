@@ -28,16 +28,15 @@ function MyProfile() {
 
     const addNewProject = async () => {
         console.log('create new project was pressed')
-          const data = {
+        const data = {
             userId: auth.currentUser.uid,
             name: "ProjectName1",
             projects: []
-          }
-          await database.collection('users').add(data);
-      }
+        }
+        await database.collection('users').add(data);
+    }
 
-      //
-      useEffect(() => {
+    useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
                 getListProject()
@@ -45,13 +44,6 @@ function MyProfile() {
         });
         return unsubscribe;
     }, []);
-    //
-
-
-    // useEffect(() => {
-
-    //     getListProject()
-    // }, [])
 
     // get list of projects
     const getListProject = async () => {
@@ -64,35 +56,58 @@ function MyProfile() {
                     response.push(item)
                 });
             setListProject(response)
-            console.log(response)
+            console.log('my projects = ', response)
         });
     }
 
     return (
-        <div>
-            <h1>My Profile</h1>
-            <p>Hi, user {auth.currentUser?.email}, {title}</p>
+        <div className={styles.container}>
+            <div className={styles.basiccontainer}>
+                <h1>My Profile</h1>
+                <p>Hi, user {auth.currentUser?.email}, {title}</p>
 
-            <p>Projects: </p>
-            {listProject.map(project => <div><Link
-                href={{
-                    pathname: '/ProjectPage',
-                    query: { 
-                        projname: project.name, 
-                        projid: project.id, 
-                        items: JSON.stringify(project.projects)
-                    } // the data, cant send a lot of data
-                    // to send array of items cant use items: project.projects
-                }}
-            >
-                {project.name}
-            </Link></div>)}
+                <p>Projects: </p>
+                {listProject.map(project => <div key={project.id}>
+                    <Link
+                        style={{ color: 'black', fontSize: 20, margin: 10, padding: 10 }}
+                        href={{
+                            pathname: '/ProjectPage',
+                            query: {
+                                projname: project.name,
+                                projid: project.id,
+                                items: JSON.stringify(project.projects)
+                            } // the data, cant send a lot of data
+                            // to send array of items cant use items: project.projects
+                        }}
+                    >
+                        {project.name}
+                    </Link></div>)}
 
                 <br />
-            <button onClick={signOutUser}>Sign Out</button>
-            <button onClick={addNewProject}>Create New Project</button>
-        </div>
+                <div style={{ flex: 'row' }}>
+                    <button style={{
+                        width: "300px",
+                        height: "50px",
+                        paddingLeft: "10px",
+                        paddingTop: "5px",
+                        // border: "none",
+                        margin: "10px",
+                        borderRadius: "10px"
+                    }} onClick={addNewProject}>Create New Project</button>
+                    <button style={{
+                        width: "300px",
+                        height: "50px",
+                        paddingLeft: "10px",
+                        paddingTop: "5px",
+                        // border: "none",
+                        margin: "10px",
+                        borderRadius: "10px"
+                    }} onClick={signOutUser}>Sign Out</button>
+                </div>
 
+
+            </div>
+        </div>
     )
 }
 

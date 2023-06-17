@@ -9,15 +9,38 @@
 }
 
 .mycontainer {
-    width: 70%;
+    width: 60%;
     height: 500px;
     border-radius: 20px;
     display: flex;
     flex-direction: row;
+    /* justify-content: center; uncomment to center content */
+    align-items: center;
+    background-image: url("../assets/finding_software_solutions.png");
+    background-size: 60vw 60vh;
+    box-shadow: 20px 20px 0px blue;
+  }
+
+  .logincontainer {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgb(223, 223, 223);
-    box-shadow: 20px 20px 0px blue;
+    background-color: #0070f3;
+    min-height: 100vh;
+  }
+
+  .basiccontainer {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #c5d2e0;
+    min-height: 100vh;
   }
 
   .modalInside {

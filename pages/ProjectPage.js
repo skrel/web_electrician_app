@@ -3,8 +3,6 @@ import Link from 'next/link'
 import database from "../firebase/firebaseApp"
 import styles from '../styles/Home.module.css'
 
-// import AddItem from "../components/AddItem"
-
 import React, { useState, useEffect } from 'react'
 
 // TODO:  each child in the list should have a unique "key" prop.
@@ -16,11 +14,11 @@ function ProjectPage() {
     const router = useRouter()
 
     const [data, setData] = useState()
-    const [projNameToDisplay, setProjNameToDisplay] = useState()
+    const [projNameToDisplay, setProjNameToDisplay] = useState("")
     const [projectId, setProjectId] = useState()
     const [projectIdsub, setProjectIdsub] = useState()
     const [itemsToDisplay, setItemsToDisplay] = useState([])
-    const naImage = 'https://skrel.github.io/jsonapi/public/image/na.png';
+    const naImage = 'https://skrel.github.io/jsonapi/public/image/na.png'
     const [editProjName, setEditProjName] = useState(false)
     const [newProjectName, setNewProjectName] = useState("")
 
@@ -34,74 +32,10 @@ function ProjectPage() {
 
     }, [router.isReady]);
 
-    const [showModal, setShowModal] = useState(false)
-    const [newItemName, setNewItemName] = useState('')
-    const [newItemPurpose, setNewItemPurpose] = useState('')
-
-    const AddItem = () => {
-        return (
-            <div>
-                <div>
-                    <button
-                        type="button"
-                        onClick={() => setShowModal(true)}
-                    >
-                        Add Single Item
-                    </button>
-                </div>
-
-                {showModal ? (
-                    <div className={styles.modalOutside}>
-                        <div className={styles.modalInside}>
-                            <h2>Create New Item</h2><br />
-                            <input
-                                type='text'
-                                name='itemname'
-                                placeholder='Enter name'
-                                onChange={(event) => setNewItemName(event.target.value)}
-                                value={newItemName}
-                            />
-
-                            <input
-                                type='text'
-                                name='itempurpose'
-                                placeholder='Enter purpose'
-                                onChange={(event) => setNewItemPurpose(event.target.value)}
-                                value={newItemPurpose}
-                            />
-                            <input
-                                type='text'
-                                name='itemqty'
-                                placeholder='Enter qty'
-                            // disabled={true}
-                            // onChange={(event) => setPassword(event.target.value)}
-                            // value={password}
-                            />
-                            <input
-                                type='text'
-                                name='itemprice'
-                                placeholder='Enter price'
-                            // onChange={(event) => setPassword(event.target.value)}
-                            // value={password}
-                            />
-
-                            <br />
-                            <button onClick={handleSaveItemToFirebase}>Add</button>
-                            <button onClick={() => setShowModal(false)}>Close</button>
-
-                        </div>
-
-                    </div>
-                ) : null}
-            </div>
-
-        )
-    }
-
     const handleSaveItemToFirebase = () => {
         console.log('save new item button pressed;')
         database.collection('users').doc(projectIdsub).update({
-            projects: [...itemsToDisplay, { "name": newItemName, "purpose": newItemPurpose, "qty": 1, "price": 0.01, "image": naImage }]
+            projects: [...itemsToDisplay, { "name": "Item Name", "purpose": "Item Purpose", "qty": 1, "price": 0.01, "image": naImage }]
         })
     }
 
@@ -178,12 +112,8 @@ function ProjectPage() {
 
     let csv = arrayToCsv(projectItemsToDownload)
 
-    /** Convert a 2D array into a CSV string
- */
+    /** Convert a 2D array into a CSV string */
     function arrayToCsv() {
-        console.log('@@@ download button was pressed')
-        console.log(projectItemsToDownload)
-
         return projectItemsToDownload.map(row =>
             row
                 .map(String)  // convert every value to String
@@ -211,37 +141,46 @@ function ProjectPage() {
     }
 
     return (
-        <div>
-            <h1>Project Page</h1>
+        <div className={styles.container}>
+            <div className={styles.basiccontainer}>
+                <h1>Project Page</h1>
 
-            <label>Project Name: </label>
-            <input
-                type='text'
-                name='projectname'
-                disabled={true}
-                // onChange={(event) => setNewProjectName(event.target.value)}
-                value={projNameToDisplay}
-            />
-            <button style={{ display: editProjName ? "none" : "block" }} onClick={editProjectName}>Edit</button>
-            <input
-                type={editProjName ? 'text' : 'hidden'}
-                name='newprojectname'
-                placeholder='Enter new project name'
-                onChange={(event) => setNewProjectName(event.target.value)}
-                value={newProjectName}
-            />
-            <button style={{ display: editProjName ? "block" : "none" }} onClick={saveProjectName}>Save</button>
-            <button style={{ display: editProjName ? "block" : "none" }} onClick={cancelProjectNameChange}>Cancel Change</button>
+                <label>Project Name: </label>
+                <input
+                    type='text'
+                    name='projectname'
+                    disabled={true}
+                    // onChange={(event) => setNewProjectName(event.target.value)}
+                    value={projNameToDisplay}
+                />
+                <button style={{ display: editProjName ? "none" : "block" }} onClick={editProjectName}>Edit</button>
+                <input
+                    type={editProjName ? 'text' : 'hidden'}
+                    name='newprojectname'
+                    placeholder='Enter new project name'
+                    onChange={(event) => setNewProjectName(event.target.value)}
+                    value={newProjectName}
+                />
+                <button style={{ display: editProjName ? "block" : "none" }} onClick={saveProjectName}>Save</button>
+                <button style={{ display: editProjName ? "block" : "none" }} onClick={cancelProjectNameChange}>Cancel Change</button>
 
-            <br />
-            <div>
-                {projectItems.map(item => {
-                    return (
-                        <div>
-                            <p>{item.key}. {item.name}</p>
-                            <p>{item.image}, qty: {item.qty}</p>
-                            <p>purpose: {item.purpose}, price: {item.price}</p>
-                            <Link
+                <br />
+                <div>
+                    {projectItems.map(item => {
+                        return (
+                            <div key={item.key}>
+                                <div style={{ flex: 'row', boxShadow: '1px 1px 0px black' }}>
+                                    <img src={item.image} width={100} height={100} />
+
+                                    <div>
+                                        <p>{item.key}. {item.name}</p>
+                                        <p>qty: {item.qty}</p>
+                                        <p>purpose: {item.purpose}, price: {item.price}</p>
+                                    </div>
+                                </div>
+
+
+                                {/* <Link
                                 href={{
                                     pathname: '/ItemPage',
                                     query: {
@@ -253,22 +192,57 @@ function ProjectPage() {
                                 }}
                             >
                                 Edit
-                            </Link>
-                            <button onClick={() => handleDeleteItemFromFirebase(item)}>Delete</button>
-                            <br /><br />
-                        </div>
-                    )
-                }
-                )}
+                            </Link> */}
+                                <button >Edit</button>
+                                <button onClick={() => handleDeleteItemFromFirebase(item)}>Delete</button>
+                                <br /><br />
+                            </div>
+                        )
+                    }
+                    )}
+
+                </div>
+                <br />
+
+                <div style={{ flex: 'row' }}>
+                    <Link href="/MyProfile"> Back </Link>
+                    <button
+                        style={{
+                            width: "200px",
+                            height: "50px",
+                            paddingLeft: "10px",
+                            paddingTop: "5px",
+                            // border: "none",
+                            margin: "10px",
+                            borderRadius: "10px"
+                        }}
+                        onClick={handleDeleteAllItemsFromFirebase}>Delete All Items</button>
+
+                    <button style={{
+                        width: "200px",
+                        height: "50px",
+                        paddingLeft: "10px",
+                        paddingTop: "5px",
+                        // border: "none",
+                        margin: "10px",
+                        borderRadius: "10px"
+                    }} onClick={downloadBlob}>Download *.csv</button>
+                    <button style={{
+                        width: "200px",
+                        height: "50px",
+                        paddingLeft: "10px",
+                        paddingTop: "5px",
+                        // border: "none",
+                        margin: "10px",
+                        borderRadius: "10px"
+                    }} onClick={handleSaveItemToFirebase}>Add Item</button>
+                </div>
+
+
+
 
             </div>
-            <br />
-            <Link href="/MyProfile"> Back </Link>
-            <button onClick={handleDeleteAllItemsFromFirebase}>Delete All Items</button>
-            <button onClick={downloadBlob}>Download *.csv</button>
-            <AddItem />
         </div>
-
     )
 }
 
