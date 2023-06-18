@@ -168,17 +168,15 @@ function ProjectPage() {
                 <div>
                     {projectItems.map(item => {
                         return (
-                            <div key={item.key}>
-                                <div style={{ flex: 'row', boxShadow: '1px 1px 0px black' }}>
-                                    <img src={item.image} width={100} height={100} />
-
-                                    <div>
-                                        <p>{item.key}. {item.name}</p>
-                                        <p>qty: {item.qty}</p>
-                                        <p>purpose: {item.purpose}, price: {item.price}</p>
-                                    </div>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', boxShadow: '2px 2px 0px black' }} key={item.key}>
+                                <img src={item.image} width={100} height={100} />
+                                <div >
+                                    <p style={{lineHeight: '20%'}}>{item.key}. {item.name}</p>
+                                    <p style={{lineHeight: '20%'}}>QTY: {item.qty}</p>
+                                    <p style={{lineHeight: '20%'}}>Purpose: {item.purpose}</p>
+                                    <p style={{lineHeight: '20%'}}>Price: {item.price}</p>
                                 </div>
-
+                                
 
                                 {/* <Link
                                 href={{
@@ -195,7 +193,6 @@ function ProjectPage() {
                             </Link> */}
                                 <button >Edit</button>
                                 <button onClick={() => handleDeleteItemFromFirebase(item)}>Delete</button>
-                                <br /><br />
                             </div>
                         )
                     }
