@@ -17,6 +17,10 @@ export default function Home() {
             </Head>
             {/* <h1>Home</h1> */}
 
+            <div className={styles.headermain}>
+                
+            </div>
+
             <div className={styles.mycontainer}>
                 <Link href="/Start"
                     style={{

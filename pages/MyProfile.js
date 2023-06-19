@@ -61,15 +61,21 @@ function MyProfile() {
     }
 
     return (
+
         <div className={styles.container}>
+
+            <div className={styles.header}>
+                <button style={{ width: '100px', margin: '10px', backgroundColor: 'red', color: 'white' }} onClick={signOutUser}>Sign Out</button>
+                <button style={{ width: '100px', margin: '10px', backgroundColor: 'green', color: 'white' }} onClick={addNewProject}>+ New Prj</button>
+
+            </div>
+
             <div className={styles.basiccontainer}>
-                <h1>My Profile</h1>
                 <p>Hi, user {auth.currentUser?.email}, {title}</p>
 
-                <p>Projects: </p>
-                {listProject.map(project => <div key={project.id}>
+                {listProject.map(project => <div className={styles.project} key={project.id}>
                     <Link
-                        style={{ color: 'black', fontSize: 20, margin: 10, padding: 10 }}
+                        style={{ color: 'black', fontSize: 20, margin: 10, padding: 10, textDecoration: 'none' }}
                         href={{
                             pathname: '/ProjectPage',
                             query: {
@@ -84,7 +90,7 @@ function MyProfile() {
                     </Link></div>)}
 
                 <br />
-                <div style={{ flex: 'row' }}>
+                {/* <div style={{ flex: 'row' }}>
                     <button style={{
                         width: "300px",
                         height: "50px",
@@ -103,7 +109,7 @@ function MyProfile() {
                         margin: "10px",
                         borderRadius: "10px"
                     }} onClick={signOutUser}>Sign Out</button>
-                </div>
+                </div> */}
 
 
             </div>

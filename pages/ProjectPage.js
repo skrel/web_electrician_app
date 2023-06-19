@@ -22,6 +22,8 @@ function ProjectPage() {
     const [editProjName, setEditProjName] = useState(false)
     const [newProjectName, setNewProjectName] = useState("")
 
+    const { push } = useRouter()
+
     useEffect(() => {
         if (!router.isReady) return;
         setData(router.query)
@@ -37,6 +39,8 @@ function ProjectPage() {
         database.collection('users').doc(projectIdsub).update({
             projects: [...itemsToDisplay, { "name": "Item Name", "purpose": "Item Purpose", "qty": 1, "price": 0.01, "image": naImage }]
         })
+
+        push('/MyProfile')
     }
 
     const handleDeleteAllItemsFromFirebase = () => {
@@ -61,6 +65,8 @@ function ProjectPage() {
         database.collection('users').doc(projectIdsub).update({
             projects: [...newItemArray]
         })
+
+        push('/MyProfile')
     }
 
     const editProjectName = () => {
@@ -79,6 +85,8 @@ function ProjectPage() {
         database.collection('users').doc(projectIdsub).update({
             name: newProjectName
         })
+
+        push('/MyProfile')
     }
 
     let projectItems = []
@@ -142,8 +150,15 @@ function ProjectPage() {
 
     return (
         <div className={styles.container}>
+
+            <div className={styles.header}>
+
+                <button style={{ width: '100px', margin: '10px', backgroundColor: 'green', color: 'white' }} onClick={handleDeleteAllItemsFromFirebase}>Delete All</button>
+                <button style={{ width: '100px', margin: '10px', backgroundColor: 'red', color: 'white' }} onClick={downloadBlob}>Download</button>
+                <button style={{ width: '100px', margin: '10px', backgroundColor: 'black', color: 'white' }} onClick={handleSaveItemToFirebase}>Add Item</button>
+            </div>
+
             <div className={styles.basiccontainer}>
-                <h1>Project Page</h1>
 
                 <label>Project Name: </label>
                 <input
@@ -168,31 +183,33 @@ function ProjectPage() {
                 <div>
                     {projectItems.map(item => {
                         return (
-                            <div style={{ display: 'flex', alignItems: 'flex-start', boxShadow: '2px 2px 0px black' }} key={item.key}>
+                            <div className={styles.projectitem} key={item.key}>
                                 <img src={item.image} width={100} height={100} />
-                                <div >
-                                    <p style={{lineHeight: '20%'}}>{item.key}. {item.name}</p>
-                                    <p style={{lineHeight: '20%'}}>QTY: {item.qty}</p>
-                                    <p style={{lineHeight: '20%'}}>Purpose: {item.purpose}</p>
-                                    <p style={{lineHeight: '20%'}}>Price: {item.price}</p>
+                                <div style={{ width: '60%', paddingLeft: '5px' }}>
+                                    <p style={{ lineHeight: '20%' }}>{item.key}. {item.name}</p>
+                                    <p style={{ lineHeight: '20%' }}>QTY: {item.qty}</p>
+                                    <p style={{ lineHeight: '20%' }}>Purpose: {item.purpose}</p>
+                                    <p style={{ lineHeight: '20%' }}>Price: {item.price}</p>
                                 </div>
-                                
 
-                                {/* <Link
-                                href={{
-                                    pathname: '/ItemPage',
-                                    query: {
-                                        itemName: item.name,
-                                        itemQty: item.qty,
-                                        itemPurpose: item.purpose,
-                                        itemPrice: item.price
-                                    }
-                                }}
-                            >
-                                Edit
-                            </Link> */}
-                                <button >Edit</button>
-                                <button onClick={() => handleDeleteItemFromFirebase(item)}>Delete</button>
+
+
+                                <div>
+                                    <Link
+                                        href={{
+                                            pathname: '/ItemPage',
+                                            query: {
+                                                itemName: item.name,
+                                                itemQty: item.qty,
+                                                itemPurpose: item.purpose,
+                                                itemPrice: item.price
+                                            }
+                                        }}
+                                    >
+                                        Edit
+                                    </Link>
+                                    <button onClick={() => handleDeleteItemFromFirebase(item)}>Delete</button>
+                                </div>
                             </div>
                         )
                     }
@@ -202,37 +219,7 @@ function ProjectPage() {
                 <br />
 
                 <div style={{ flex: 'row' }}>
-                    <Link href="/MyProfile"> Back </Link>
-                    <button
-                        style={{
-                            width: "200px",
-                            height: "50px",
-                            paddingLeft: "10px",
-                            paddingTop: "5px",
-                            // border: "none",
-                            margin: "10px",
-                            borderRadius: "10px"
-                        }}
-                        onClick={handleDeleteAllItemsFromFirebase}>Delete All Items</button>
-
-                    <button style={{
-                        width: "200px",
-                        height: "50px",
-                        paddingLeft: "10px",
-                        paddingTop: "5px",
-                        // border: "none",
-                        margin: "10px",
-                        borderRadius: "10px"
-                    }} onClick={downloadBlob}>Download *.csv</button>
-                    <button style={{
-                        width: "200px",
-                        height: "50px",
-                        paddingLeft: "10px",
-                        paddingTop: "5px",
-                        // border: "none",
-                        margin: "10px",
-                        borderRadius: "10px"
-                    }} onClick={handleSaveItemToFirebase}>Add Item</button>
+                    <Link style={{ border: '2px solid blue', textAlign: 'center', }} href="/MyProfile"> Back </Link>
                 </div>
 
 
