@@ -14,15 +14,32 @@ function ItemPage() {
 
 
     return (
-        <div className={styles.conteiner}>
+        <div className={styles.flexRow}>
 
-            <div className={styles.header}>
-                <button style={{ width: '100px', margin: '10px', backgroundColor: 'green', color: 'white' }} onClick={updateItem}>Update</button>
+            {/* LEFT */}
+            <div className={styles.columnleft}>
+                {/* Links and path */}
+                <p>
+                    <Link style={{ textDecoration: 'none' }} href="/MyProfile">My Profile</Link>
+                    /
+                    {/* <Link style={{ textDecoration: 'none' }} href="/ProjectPage">Project Page</Link> */}
+                </p>
+
+                {/* Description */}
+                <h2>Item Info</h2>
+                <p>Item name: {itemNameToDisplay}</p>
+                
+                {/* Button deck */}
+                {/* <button style={{ width: '100px', margin: '10px', backgroundColor: 'green', color: 'white' }} onClick={updateItem}>Update</button> */}
+                <button className={styles.card} onClick={updateItem}>Update</button>
             </div>
 
-            <h1>SORRY, THIS SCREEN IS IN PROGRESS</h1>
-            <p>Item name: {itemNameToDisplay}</p>
-            <Link href="/MyProfile">Back To Project</Link>
+
+            {/* LEFT */}
+            <div className={styles.columnright} >
+                <h1>SORRY, THIS SCREEN IS IN PROGRESS</h1>
+            </div>
+
         </div>
 
     )

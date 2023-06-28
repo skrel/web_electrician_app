@@ -77,8 +77,6 @@ const Start = () => {
                             }}
                             type='password'
                             name='password'
-                            // TODO: how to secure the password entry
-                            // secureTextEntry={true}
                             placeholder='password'
                             onChange={(event) => setPassword(event.target.value)}
                             value={password}
@@ -87,19 +85,9 @@ const Start = () => {
                     </div>
                     <br />
 
-                    <button style={{
-                        width: "100px",
-                        height: "50px",
-                        borderColor: "white",
-                        paddingLeft: "10px",
-                        paddingTop: "5px",
-                        backgroundColor: "black",
-                        marginLeft: "20px",
-                        color: "white",
-                    }} type='submit'>Login</button>
+                    <button className={styles.card} type='submit'>Login</button>
 
                     <p style={{ color: 'white', fontStyle: 'italic' }}>Download the app to register: <Link style={{ color: 'yellow'}} href={'https://lnkd.in/eSYF_DfE'} >Android</Link> or <Link style={{ color: 'yellow'}} href={'https://lnkd.in/eWrbYYtc'} >iOS</Link></p>
-
 
                 </form>
             </div>

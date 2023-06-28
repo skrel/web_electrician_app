@@ -66,7 +66,9 @@ function ProjectPage() {
             projects: [...newItemArray]
         })
 
+        // TODO: debug this see what's happening on reload page
         push('/MyProfile')
+        // router.reload()
     }
 
     const editProjectName = () => {
@@ -149,19 +151,33 @@ function ProjectPage() {
     }
 
     return (
-        <div className={styles.container}>
+        <div className={styles.flexRow}>
 
-            <div className={styles.header}>
+            {/* LEFT */}
+            <div className={styles.columnleft}>
+                {/* Links and path */}
+                <p>
+                    <Link style={{ textDecoration: 'none' }} href="/MyProfile">My Profile</Link>
+                    /
+                </p>
 
+                {/* Description */}
+                <h2>Project Info</h2>
+                <p>Project name: {projNameToDisplay}</p>
+                <p>Created: </p>
+                <p>Type: </p>
+                
+                {/* Button deck */}
                 <button style={{ width: '100px', margin: '10px', backgroundColor: 'green', color: 'white' }} onClick={handleDeleteAllItemsFromFirebase}>Delete All</button>
                 <button style={{ width: '100px', margin: '10px', backgroundColor: 'red', color: 'white' }} onClick={downloadBlob}>Download</button>
                 <button style={{ width: '100px', margin: '10px', backgroundColor: 'black', color: 'white' }} onClick={handleSaveItemToFirebase}>Add Item</button>
             </div>
 
-            <div className={styles.basiccontainer}>
 
-                <label>Project Name: </label>
-                <input
+            {/* LEFT */}
+            <div className={styles.columnright} >
+            <label>Project Name: </label>
+                 <input
                     type='text'
                     name='projectname'
                     disabled={true}
@@ -192,8 +208,6 @@ function ProjectPage() {
                                     <p style={{ lineHeight: '20%' }}>Price: {item.price}</p>
                                 </div>
 
-
-
                                 <div>
                                     <Link
                                         href={{
@@ -214,17 +228,7 @@ function ProjectPage() {
                         )
                     }
                     )}
-
                 </div>
-                <br />
-
-                <div style={{ flex: 'row' }}>
-                    <Link style={{ border: '2px solid blue', textAlign: 'center', }} href="/MyProfile"> Back </Link>
-                </div>
-
-
-
-
             </div>
         </div>
     )

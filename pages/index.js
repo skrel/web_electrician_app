@@ -17,24 +17,9 @@ export default function Home() {
             </Head>
             {/* <h1>Home</h1> */}
 
-            <div className={styles.headermain}>
-                
-            </div>
-
             <div className={styles.mycontainer}>
                 <Link href="/Start"
-                    style={{
-                        textDecoration: 'none',
-                        textAlign: 'center',
-                        width: 100,
-                        marginTop: 150,
-                        marginLeft: 100,
-                        border: '2px solid blue',
-                        borderRadius: '10px',
-                        color: 'blue',
-                        fontSize: 28,
-                        fontStyle: 'italic',
-                    }}
+                    className={styles.card}
                 >Start</Link>
             </div>
 

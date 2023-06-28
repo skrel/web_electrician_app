@@ -30,10 +30,12 @@ function MyProfile() {
         console.log('create new project was pressed')
         const data = {
             userId: auth.currentUser.uid,
-            name: "ProjectName1",
+            name: "ProjectName_" + Math.random().toString(36).substr(2, 9), // generate random name
             projects: []
         }
         await database.collection('users').add(data);
+
+        router.reload()
     }
 
     useEffect(() => {
@@ -60,22 +62,62 @@ function MyProfile() {
         });
     }
 
+    const deleteProject = (projectId) => {
+        console.log('delete project button was pressed')
+        console.log('project id to delete = ', projectId)
+
+        // delete project
+        // let newProjectList = []
+        // for (var i = 0; i < listProject.length; i++) {
+        //     var object = listProject[i]
+        //     if(object.id != projectId) {
+        //         newProjectList.push(object)
+        //     }
+        // }
+
+
+        // let xUser = auth.currentUser.uid
+        // const getCollection = database.collection("users")
+        // const userFilter = getCollection.where("userId", "==", xUser)
+        // const projectQuery = userFilter.where("name", "==", projectName)
+        // projectQuery.get().then(function (querySnapshot) {
+        //     querySnapshot.forEach(function (doc) {
+        //         doc.ref.delete();
+        //     })
+        // })
+
+
+
+        // router.reload()
+    }
+
     return (
 
-        <div className={styles.container}>
+        <div className={styles.flexRow}>
 
-            <div className={styles.header}>
-                <button style={{ width: '100px', margin: '10px', backgroundColor: 'red', color: 'white' }} onClick={signOutUser}>Sign Out</button>
-                <button style={{ width: '100px', margin: '10px', backgroundColor: 'green', color: 'white' }} onClick={addNewProject}>+ New Prj</button>
+            {/* LEFT */}
+            <div className={styles.columnleft}>
+                {/* Links and path */}
+                <p>
+                    /
+                </p>
 
+                {/* Description */}
+                <h2>My Profile</h2>
+                <p>User name: {auth.currentUser?.email}</p>
+                <p>Last login: </p>
+
+                {/* Button deck */}
+                <button className={styles.card} onClick={signOutUser}>Sign Out</button>
+                <button className={styles.card} onClick={addNewProject}>+ New Prj</button>
             </div>
 
-            <div className={styles.basiccontainer}>
-                <p>Hi, user {auth.currentUser?.email}, {title}</p>
 
+            {/* LEFT */}
+            <div className={styles.columnright} >
                 {listProject.map(project => <div className={styles.project} key={project.id}>
                     <Link
-                        style={{ color: 'black', fontSize: 20, margin: 10, padding: 10, textDecoration: 'none' }}
+                        style={{ color: 'black', fontSize: 20, margin: 10, padding: 10, textDecoration: 'none', width: '100%', textAlign: 'center', }}
                         href={{
                             pathname: '/ProjectPage',
                             query: {
@@ -87,32 +129,11 @@ function MyProfile() {
                         }}
                     >
                         {project.name}
-                    </Link></div>)}
-
-                <br />
-                {/* <div style={{ flex: 'row' }}>
-                    <button style={{
-                        width: "300px",
-                        height: "50px",
-                        paddingLeft: "10px",
-                        paddingTop: "5px",
-                        // border: "none",
-                        margin: "10px",
-                        borderRadius: "10px"
-                    }} onClick={addNewProject}>Create New Project</button>
-                    <button style={{
-                        width: "300px",
-                        height: "50px",
-                        paddingLeft: "10px",
-                        paddingTop: "5px",
-                        // border: "none",
-                        margin: "10px",
-                        borderRadius: "10px"
-                    }} onClick={signOutUser}>Sign Out</button>
-                </div> */}
-
-
+                    </Link>
+                    <button style={{ margin: '10px' }} onClick={() => deleteProject(project.id)}>Delete</button>
+                </div>)}
             </div>
+
         </div>
     )
 }
