@@ -22,6 +22,8 @@ function ProjectPage() {
     const [editProjName, setEditProjName] = useState(false)
     const [newProjectName, setNewProjectName] = useState("")
 
+    console.log('you have', itemsToDisplay.length, 'items in this proj')
+
     const { push } = useRouter()
 
     useEffect(() => {
@@ -41,6 +43,10 @@ function ProjectPage() {
         })
 
         push('/MyProfile')
+        // push('/ProjectPage')
+        // router.replace('/ProjectPage')
+        // router.refresh()
+        // router.reload('/MyProfile')
     }
 
     const handleDeleteAllItemsFromFirebase = () => {
@@ -57,17 +63,19 @@ function ProjectPage() {
         console.log('my item that i am passing thru = ', item)
         for (var i = 0; i < projectItems.length; i++) {
             var object = projectItems[i]
-            if (object.key + 1 !== item.key) {
+            if (object.key !== item.key) {
                 newItemArray.push(object)
             }
         }
+
+        console.log('newItemArray length = ', newItemArray.length)
 
         database.collection('users').doc(projectIdsub).update({
             projects: [...newItemArray]
         })
 
         // TODO: debug this see what's happening on reload page
-        push('/MyProfile')
+        push('/Start')
         // router.reload()
     }
 
@@ -88,7 +96,7 @@ function ProjectPage() {
             name: newProjectName
         })
 
-        push('/MyProfile')
+        push('/Start')
     }
 
     let projectItems = []
@@ -157,6 +165,8 @@ function ProjectPage() {
             <div className={styles.columnleft}>
                 {/* Links and path */}
                 <p>
+                    <Link style={{ textDecoration: 'none' }} href="/">Home</Link>
+                    /
                     <Link style={{ textDecoration: 'none' }} href="/MyProfile">My Profile</Link>
                     /
                 </p>
@@ -166,34 +176,37 @@ function ProjectPage() {
                 <p>Project name: {projNameToDisplay}</p>
                 <p>Created: </p>
                 <p>Type: </p>
-                
+
                 {/* Button deck */}
-                <button style={{ width: '100px', margin: '10px', backgroundColor: 'green', color: 'white' }} onClick={handleDeleteAllItemsFromFirebase}>Delete All</button>
-                <button style={{ width: '100px', margin: '10px', backgroundColor: 'red', color: 'white' }} onClick={downloadBlob}>Download</button>
-                <button style={{ width: '100px', margin: '10px', backgroundColor: 'black', color: 'white' }} onClick={handleSaveItemToFirebase}>Add Item</button>
+                <button className={styles.card} onClick={handleDeleteAllItemsFromFirebase}>Delete All</button>
+                <button className={styles.card} onClick={downloadBlob}>Download</button>
+                <button className={styles.card} onClick={handleSaveItemToFirebase}>Add Item</button>
             </div>
 
 
             {/* LEFT */}
             <div className={styles.columnright} >
-            <label>Project Name: </label>
-                 <input
-                    type='text'
-                    name='projectname'
-                    disabled={true}
-                    // onChange={(event) => setNewProjectName(event.target.value)}
-                    value={projNameToDisplay}
-                />
-                <button style={{ display: editProjName ? "none" : "block" }} onClick={editProjectName}>Edit</button>
-                <input
-                    type={editProjName ? 'text' : 'hidden'}
-                    name='newprojectname'
-                    placeholder='Enter new project name'
-                    onChange={(event) => setNewProjectName(event.target.value)}
-                    value={newProjectName}
-                />
-                <button style={{ display: editProjName ? "block" : "none" }} onClick={saveProjectName}>Save</button>
-                <button style={{ display: editProjName ? "block" : "none" }} onClick={cancelProjectNameChange}>Cancel Change</button>
+                <div className={styles.flexRowLocal}>
+                    <label>Project Name: </label>
+                    <input
+                        type='text'
+                        name='projectname'
+                        disabled={true}
+                        // onChange={(event) => setNewProjectName(event.target.value)}
+                        value={projNameToDisplay}
+                    />
+                    <button style={{ display: editProjName ? "none" : "block" }} onClick={editProjectName}>Edit</button>
+                    <input
+                        type={editProjName ? 'text' : 'hidden'}
+                        name='newprojectname'
+                        placeholder='Enter new project name'
+                        onChange={(event) => setNewProjectName(event.target.value)}
+                        value={newProjectName}
+                    />
+                    <button style={{ display: editProjName ? "block" : "none" }} onClick={saveProjectName}>Save</button>
+                    <button style={{ display: editProjName ? "block" : "none" }} onClick={cancelProjectNameChange}>Cancel Change</button>
+                </div>
+
 
                 <br />
                 <div>
@@ -201,15 +214,16 @@ function ProjectPage() {
                         return (
                             <div className={styles.projectitem} key={item.key}>
                                 <img src={item.image} width={100} height={100} />
-                                <div style={{ width: '60%', paddingLeft: '5px' }}>
+                                <div style={{ width: '100%', paddingLeft: '5px' }}>
                                     <p style={{ lineHeight: '20%' }}>{item.key}. {item.name}</p>
                                     <p style={{ lineHeight: '20%' }}>QTY: {item.qty}</p>
                                     <p style={{ lineHeight: '20%' }}>Purpose: {item.purpose}</p>
                                     <p style={{ lineHeight: '20%' }}>Price: {item.price}</p>
                                 </div>
 
-                                <div>
+                                <div className={styles.columnright}>
                                     <Link
+                                        className={styles.card}
                                         href={{
                                             pathname: '/ItemPage',
                                             query: {
@@ -222,7 +236,7 @@ function ProjectPage() {
                                     >
                                         Edit
                                     </Link>
-                                    <button onClick={() => handleDeleteItemFromFirebase(item)}>Delete</button>
+                                    <button className={styles.card} onClick={() => handleDeleteItemFromFirebase(item)}>Delete</button>
                                 </div>
                             </div>
                         )

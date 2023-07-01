@@ -13,11 +13,6 @@ function MyProfile() {
     const router = useRouter();
     const [listProject, setListProject] = useState([])
 
-    let title = "title undefind";
-    if (auth.currentUser?.email === "krel.svyatoslav@gmail.com") {
-        title = "Admin";
-    }
-
     const signOutUser = () => {
         signOut(auth)
             .then(() => {
@@ -62,33 +57,25 @@ function MyProfile() {
         });
     }
 
-    const deleteProject = (projectId) => {
+    const deleteProject = (projectName) => {
         console.log('delete project button was pressed')
-        console.log('project id to delete = ', projectId)
+        console.log('project id to delete = ', projectName)
 
-        // delete project
-        // let newProjectList = []
-        // for (var i = 0; i < listProject.length; i++) {
-        //     var object = listProject[i]
-        //     if(object.id != projectId) {
-        //         newProjectList.push(object)
-        //     }
-        // }
+        let xUser = auth.currentUser.uid
+        const getCollection = database.collection("users")
+        const userFilter = getCollection.where("userId", "==", xUser)
+        const projectQuery = userFilter.where("name", "==", projectName)
 
-
-        // let xUser = auth.currentUser.uid
-        // const getCollection = database.collection("users")
-        // const userFilter = getCollection.where("userId", "==", xUser)
-        // const projectQuery = userFilter.where("name", "==", projectName)
-        // projectQuery.get().then(function (querySnapshot) {
-        //     querySnapshot.forEach(function (doc) {
-        //         doc.ref.delete();
-        //     })
-        // })
-
-
-
-        // router.reload()
+        projectQuery.get()
+        .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                doc.ref.delete();
+            })
+        })
+        // .then(router.reload())
+        router.replace('/Start')
+        // router.refresh()
+        // router.reload('/MyProfile')
     }
 
     return (
@@ -99,6 +86,7 @@ function MyProfile() {
             <div className={styles.columnleft}>
                 {/* Links and path */}
                 <p>
+                    <Link style={{ textDecoration: 'none' }} href="/">Home</Link>
                     /
                 </p>
 
@@ -130,7 +118,7 @@ function MyProfile() {
                     >
                         {project.name}
                     </Link>
-                    <button style={{ margin: '10px' }} onClick={() => deleteProject(project.id)}>Delete</button>
+                    <button style={{ margin: '10px' }} onClick={() => deleteProject(project.name)}>Delete</button>
                 </div>)}
             </div>
 

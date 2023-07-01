@@ -14,6 +14,13 @@
     flex-direction: row;
 }
 
+.flexRowLocal {
+    /* min-height: 100vh; */
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: row;
+}
+
 /* Create two columns that floats next to each other */
 .columnleft {
     float: left;
@@ -67,7 +74,7 @@
     flex-direction: row;
     /* justify-content: center; uncomment to center content */
     align-items: center;
-    background-image: url("../assets/finding_software_solutions.png");
+    /* background-image: url("../assets/finding_software_solutions.png"); */
     background-size: 60vw 60vh;
     box-shadow: 20px 20px 0px blue;
 }
