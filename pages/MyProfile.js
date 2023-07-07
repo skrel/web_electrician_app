@@ -30,7 +30,23 @@ function MyProfile() {
         }
         await database.collection('users').add(data);
 
-        router.reload()
+        router.reload() // this will not work on project delete
+    }
+
+    // Delete project
+    // Each delete() call is asynchronous, so you need for all of them to complete. 
+    // IMPORTANT to use Promise.all on the return values you get from delete()
+    const deleteProject = async (projectName) => {
+        return database.collection("users")
+            .where("userId", "==", auth.currentUser.uid)
+            .where("name", "==", projectName)
+            .get()
+            .then(data => {
+                const promises = data.docs.map(doc => doc.ref.delete());
+                return Promise.all(promises);
+            }).then(() => {
+                window.location.reload()
+            })
     }
 
     useEffect(() => {
@@ -57,26 +73,7 @@ function MyProfile() {
         });
     }
 
-    const deleteProject = (projectName) => {
-        console.log('delete project button was pressed')
-        console.log('project id to delete = ', projectName)
 
-        let xUser = auth.currentUser.uid
-        const getCollection = database.collection("users")
-        const userFilter = getCollection.where("userId", "==", xUser)
-        const projectQuery = userFilter.where("name", "==", projectName)
-
-        projectQuery.get()
-        .then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-                doc.ref.delete();
-            })
-        })
-        // .then(router.reload())
-        router.replace('/Start')
-        // router.refresh()
-        // router.reload('/MyProfile')
-    }
 
     return (
 
