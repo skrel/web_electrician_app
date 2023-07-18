@@ -2,12 +2,10 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import database from "../firebase/firebaseApp"
 import styles from '../styles/Home.module.css'
-
+import { auth } from "../firebase/firebaseApp";
 import React, { useState, useEffect } from 'react'
 
-// TODO:  each child in the list should have a unique "key" prop.
 
-// TODO: make modal, add useState to save items, figure out how to refresh page
 
 function ProjectPage() {
 
@@ -22,8 +20,6 @@ function ProjectPage() {
     const [editProjName, setEditProjName] = useState(false)
     const [newProjectName, setNewProjectName] = useState("")
 
-    console.log('you have', itemsToDisplay.length, 'items in this proj')
-
     const { push } = useRouter()
 
     useEffect(() => {
@@ -36,24 +32,74 @@ function ProjectPage() {
 
     }, [router.isReady]);
 
-    const handleSaveItemToFirebase = () => {
-        console.log('save new item button pressed;')
-        database.collection('users').doc(projectIdsub).update({
-            projects: [...itemsToDisplay, { "name": "Item Name", "purpose": "Item Purpose", "qty": 1, "price": 0.01, "image": naImage }]
-        })
+    // for console log only
+    console.log('project id = ', projectIdsub)
+    if(itemsToDisplay !== undefined) {
+        console.log('you have', itemsToDisplay.length, 'items in this proj')
+    }
 
-        push('/MyProfile')
+    // to add item to db -> add item and then reset setItemsToDisplay
+    // no need to refresh the page
+    const handleSaveItemToFirebase = async () => {
+        console.log('save new item button pressed;')
+        await database.collection('users').doc(projectIdsub).update({
+            projects: [...itemsToDisplay, 
+                { "name": "Item Name", 
+                "purpose": "Item Purpose", 
+                "qty": 1, 
+                "price": 0.01, 
+                "image": naImage }]
+        }).then(() => setItemsToDisplay([...itemsToDisplay, 
+            { "name": "Item Name", 
+            "purpose": "Item Purpose", 
+            "qty": 1, 
+            "price": 0.01, 
+            "image": naImage }]))
+
+
+
+
+        // this did not work ------>
+        // router.replace("/MyProfile")
+        // router.replace('/ProjectPage')
+        // .then(() => {
+        //     window.location.reload()
+        // })
+        // .then(router.replace(router.asPath))
+        // .then(data => {return Promise.all(data)})
+        // .then(data => {console.log(Promise)})
+        // .then(() => {
+        //     window.location.reload()
+        // })
+
+        // push('/MyProfile')
         // push('/ProjectPage')
         // router.replace('/ProjectPage')
         // router.refresh()
         // router.reload('/MyProfile')
+        // window.location.reload()
+        // router.reload();
+        // router.push({ pathname: "/ProjectPage" })
+        // router.replace(router.asPath)
     }
 
+
+
+
+
+
+
+
+
+
+
+    // to add item to db -> add item and then reset setItemsToDisplay
+    // no need to refresh the page
     const handleDeleteAllItemsFromFirebase = () => {
         console.log('delete all items button pressed;')
         database.collection('users').doc(projectIdsub).update({
             projects: []
-        })
+        }).then(() => setItemsToDisplay())
     }
 
     const handleDeleteItemFromFirebase = (item) => {
@@ -73,10 +119,7 @@ function ProjectPage() {
         database.collection('users').doc(projectIdsub).update({
             projects: [...newItemArray]
         })
-
-        // TODO: debug this see what's happening on reload page
-        push('/Start')
-        // router.reload()
+        .then(() => setItemsToDisplay(newItemArray))
     }
 
     const editProjectName = () => {
@@ -100,31 +143,36 @@ function ProjectPage() {
     }
 
     let projectItems = []
-    for (var i = 0; i < itemsToDisplay.length; i++) {
-        var object = itemsToDisplay[i]
-        const projectItem = {
-            key: i + 1,
-            name: object.name,
-            image: object.image,
-            qty: object.qty,
-            purpose: object.purpose,
-            price: object.price
+    if(itemsToDisplay !== undefined) {
+        for (var i = 0; i < itemsToDisplay.length; i++) {
+            var object = itemsToDisplay[i]
+            const projectItem = {
+                key: i + 1,
+                name: object.name,
+                image: object.image,
+                qty: object.qty,
+                purpose: object.purpose,
+                price: object.price
+            }
+            projectItems.push(projectItem)
         }
-        projectItems.push(projectItem)
     }
+    
     // console.log('my items in this project = ', projectItems)
 
     // build array of arrays for downloads
     let projectItemsToDownload = [["name", "qty", "purpose", "price"]]
-    for (var i = 0; i < itemsToDisplay.length; i++) {
-        var object = itemsToDisplay[i]
-        const itemToDownload = [
-            object.name,
-            object.qty,
-            object.purpose,
-            object.price
-        ]
-        projectItemsToDownload.push(itemToDownload)
+    if(itemsToDisplay !== undefined) {
+        for (var i = 0; i < itemsToDisplay.length; i++) {
+            var object = itemsToDisplay[i]
+            const itemToDownload = [
+                object.name,
+                object.qty,
+                object.purpose,
+                object.price
+            ]
+            projectItemsToDownload.push(itemToDownload)
+        }
     }
     // console.log(projectItemsToDownload)
 
