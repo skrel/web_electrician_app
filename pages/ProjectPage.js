@@ -138,8 +138,8 @@ function ProjectPage() {
         database.collection('users').doc(projectIdsub).update({
             name: newProjectName
         })
-
-        push('/Start')
+        .then(() => setProjNameToDisplay(newProjectName))
+        .then(() => setEditProjName(false))
     }
 
     let projectItems = []
@@ -278,7 +278,8 @@ function ProjectPage() {
                                                 itemName: item.name,
                                                 itemQty: item.qty,
                                                 itemPurpose: item.purpose,
-                                                itemPrice: item.price
+                                                itemPrice: item.price,
+                                                projectId: projectIdsub
                                             }
                                         }}
                                     >

@@ -1,22 +1,36 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
+import React, { useState, useEffect } from 'react'
 
 function ItemPage() {
 
     const router = useRouter()
     const data = router.query
+
     const itemNameToDisplay = JSON.stringify(data.itemName)
+    // const itemQTYToDisplay = JSON.stringify(data.itemQty)
+    // const itemPurposeToDisplay = JSON.stringify(data.itemPurpose)
+    // const itemPriceToDisplay = JSON.stringify(data.itemPrice)
+    
+    // const projId = JSON.stringify(data.projectId).substring(1, 21)
 
-    const itemQTYToDisplay = JSON.stringify(data.itemQty)
-    const itemPurposeToDisplay = JSON.stringify(data.itemPurpose)
-    const itemPriceToDisplay = JSON.stringify(data.itemPrice)
+    const [itemName, setItemName] = useState('')
+    const [projectId, setProjectId] = useState('')
 
+    useEffect(() => {
+        if (!router.isReady) return;
+        setItemName(JSON.stringify(data.itemName))
+        setProjectId(JSON.stringify(data.projectId).substring(1, 21))
 
+    }, [router.isReady]);
 
+    console.log('@@@ proj id = ', projectId)
 
     const updateItem = () => {
         console.log('update item was pressed')
+        // code to update item here
+        
     }
 
 
@@ -47,37 +61,41 @@ function ItemPage() {
             {/* LEFT */}
             <div className={styles.columnright} >
 
+                {/* item name */}
                 <input
                     type={'text'}
-                    name='newprojectname'
-                    placeholder='Enter new project name'
-                    // onChange={(event) => setNewProjectName(event.target.value)}
-                    value={itemNameToDisplay}
+                    name='name'
+                    placeholder='Enter item name'
+                    onChange={(event) => setItemName(event.target.value)}
+                    value={itemName}
                 /> <br />
 
-                <input
+                {/* item qty */}
+                {/* <input
                     type={'text'}
-                    name='newprojectname'
-                    placeholder='Enter new project name'
-                    // onChange={(event) => setNewProjectName(event.target.value)}
+                    name='qty'
+                    placeholder='Enter item qty'
+                    onChange={(event) => setItemName(event.target.value)}
                     value={itemQTYToDisplay}
-                /> <br />
+                /> <br /> */}
 
-                <input
+                {/* item price */}
+                {/* <input
                     type={'text'}
-                    name='newprojectname'
-                    placeholder='Enter new project name'
+                    name='price'
+                    placeholder='Enter item price'
                     // onChange={(event) => setNewProjectName(event.target.value)}
                     value={itemPriceToDisplay}
-                /> <br />
+                /> <br /> */}
 
-                <input
+                {/* item purpose */}
+                {/* <input
                     type={'text'}
-                    name='newprojectname'
-                    placeholder='Enter new project name'
+                    name='purpose'
+                    placeholder='Enter item purpose'
                     // onChange={(event) => setNewProjectName(event.target.value)}
                     value={itemPurposeToDisplay}
-                />
+                /> */}
             </div>
 
         </div>
