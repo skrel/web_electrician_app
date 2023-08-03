@@ -279,7 +279,8 @@ function ProjectPage() {
                                                 itemQty: item.qty,
                                                 itemPurpose: item.purpose,
                                                 itemPrice: item.price,
-                                                projectId: projectIdsub
+                                                projectId: projectIdsub,
+                                                itemarrnumber: item.key - 1
                                             }
                                         }}
                                     >
