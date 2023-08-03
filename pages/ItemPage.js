@@ -21,12 +21,19 @@ function ItemPage() {
     const [projectId, setProjectId] = useState('')
     const [itemArrNum, setItemArrNum] = useState('')
 
+    const [itemPrice, setItemPrice] = useState('')
+    const [itemPurpose, setItemPurpose] = useState('')
+    const [itemQty, setItemQty] = useState('')
 
     useEffect(() => {
         if (!router.isReady) return;
-        setItemName(JSON.stringify(data.itemName))
+        setItemName(JSON.stringify(data.itemName).substring(1, JSON.stringify(data.itemName).length - 1))
         setProjectId(JSON.stringify(data.projectId).substring(1, 21))
         setItemArrNum(JSON.stringify(data.itemarrnumber).substring(1, 2))
+
+        setItemPrice(JSON.stringify(data.itemPrice).substring(1, JSON.stringify(data.itemPrice).length - 1))
+        setItemPurpose(JSON.stringify(data.itemPurpose).substring(1, JSON.stringify(data.itemPurpose).length - 1))
+        setItemQty(JSON.stringify(data.itemQty).substring(1, JSON.stringify(data.itemQty).length - 1))
 
     }, [router.isReady]);
 
@@ -82,9 +89,9 @@ function ItemPage() {
             } else {
                 console.log('change')
                 pojectItems[i].name = itemName
-                // pojectItems[i].price = 'new name here'
-                // pojectItems[i].purpose = 'new name here'
-                // pojectItems[i].qty = 'new name here'
+                pojectItems[i].price = itemPrice
+                pojectItems[i].purpose = itemPurpose
+                pojectItems[i].qty = itemQty
                 updatedItem.push(pojectItems[i])
             }
         }
@@ -160,11 +167,11 @@ function ItemPage() {
                         border: "1px solid black",
                         margin: "5px"
                     }}
-                    type={'text'}
+                    type={'number'}
                     name='qty'
                     placeholder='Enter item qty'
-                    onChange={(event) => setItemName(event.target.value)}
-                    value={itemName}
+                    onChange={(event) => setItemQty(event.target.value)}
+                    value={itemQty}
                 /> <br />
 
                 {/* item price */}
@@ -180,8 +187,8 @@ function ItemPage() {
                     type={'text'}
                     name='price'
                     placeholder='Enter item price'
-                    onChange={(event) => setNewProjectName(event.target.value)}
-                    value={itemName}
+                    onChange={(event) => setItemPrice(event.target.value)}
+                    value={itemPrice}
                 /> <br />
 
                 {/* item purpose */}
@@ -197,8 +204,8 @@ function ItemPage() {
                     type={'text'}
                     name='purpose'
                     placeholder='Enter item purpose'
-                    onChange={(event) => setNewProjectName(event.target.value)}
-                    value={itemName}
+                    onChange={(event) => setItemPurpose(event.target.value)}
+                    value={itemPurpose}
                 />
             </div>
 
