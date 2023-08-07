@@ -90,7 +90,6 @@ function MyProfile() {
                 {/* Description */}
                 <h2>My Profile</h2>
                 <p>User name: {auth.currentUser?.email}</p>
-                <p>Last login: </p>
 
                 {/* Button deck */}
                 <button className={styles.card} onClick={signOutUser}>Sign Out</button>

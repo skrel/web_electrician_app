@@ -222,8 +222,6 @@ function ProjectPage() {
                 {/* Description */}
                 <h2>Project Info</h2>
                 <p>Project name: {projNameToDisplay}</p>
-                <p>Created: </p>
-                <p>Type: </p>
 
                 {/* Button deck */}
                 <button className={styles.card} onClick={handleDeleteAllItemsFromFirebase}>Delete All</button>

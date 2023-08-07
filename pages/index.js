@@ -9,20 +9,6 @@ import React, { useState, useEffect } from 'react';
 export default function Home() {
 
     return (
-        // <div className={styles.container}>
-        //     <Head>
-        //         <title>Electrician</title>
-        //         {/* TODO change the page icon */}
-        //         <link rel="icon" href="/favicon.ico" />
-        //     </Head>
-        //     {/* <h1>Home</h1> */}
-
-        //     <div className={styles.mycontainer}>
-        //         <Link href="/Start"
-        //             className={styles.card}
-        //         >Start</Link>
-        //     </div>
-        // </div>
 
 
         <div className={styles.container}>
@@ -35,7 +21,7 @@ export default function Home() {
           Welcome to <a href="https://github.com/skrel/Electrician/wiki">Electrician!</a>
         </h1>
         <p className={styles.description}>
-          Join our <a href="https://www.linkedin.com/company/app-for-electrician/?viewAsMember=true">LinkedIn</a>
+          Join us on <a href="https://www.linkedin.com/company/app-for-electrician/?viewAsMember=true">LinkedIn</a>
           {/* <code className={styles.code}>pages/index.js</code> */}
         </p>
         <div className={styles.grid}>

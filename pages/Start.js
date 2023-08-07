@@ -8,6 +8,10 @@ import { auth } from "../firebase/firebaseApp"
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
+
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 const Start = () => {
 
     // const [username, setUsername] = useState("krel.svyatoslav@gmail.com")
@@ -15,6 +19,8 @@ const Start = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const router = useRouter()
+
+    const notify = () => toast("Your email address or password is incorrect!")
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -37,60 +43,70 @@ const Start = () => {
                 console.log('@@@ User metadata while signIn: ', user.metadata)
             })
             .catch((error) => {
-                console.log('@@@ Error = ', error.message);
-                alert(error.message);
+                console.log('@@@ Error = ', error.message)
+                // alert(error.message)
+                notify()
             });
     };
 
+
+
     return (
         <div className={styles.container}>
-            <div className={styles.logincontainer}>
-                <form onSubmit={signIn}>
-                    <label style={{ color: 'white', fontStyle: 'italic' }}>Email</label>
-                    <div>
-                        <input
-                            style={{
-                                width: "300px",
-                                height: "50px",
-                                paddingLeft: "10px",
-                                paddingTop: "5px",
-                                border: "none",
-                            }}
-                            type='text'
-                            name='username'
-                            placeholder='email'
-                            onChange={(event) => setUsername(event.target.value)}
-                            value={username}
-                            required
-                        />
-                    </div>
-                    <br />
-                    <label style={{ color: 'white', fontStyle: 'italic' }}>Password</label>
-                    <div>
-                        <input
-                            style={{
-                                width: "300px",
-                                height: "50px",
-                                paddingLeft: "10px",
-                                paddingTop: "5px",
-                                border: "none",
-                            }}
-                            type='password'
-                            name='password'
-                            placeholder='password'
-                            onChange={(event) => setPassword(event.target.value)}
-                            value={password}
-                            required
-                        />
-                    </div>
-                    <br />
+            <form onSubmit={signIn}>
+                {/* <label style={{ fontStyle: 'italic' }}>Email</label> */}
+                <div>
+                    <input
+                        style={{
+                            width: "300px",
+                            height: "50px",
+                            paddingLeft: "10px",
+                            paddingTop: "5px",
+                            border: "none",
+                            borderBottom: "1px solid black",
+                            borderRadius: "10px",
+                            boxShadow: "5px 5px 5px 5px rgb(216, 216, 216)"
+                        }}
+                        type='text'
+                        name='username'
+                        placeholder='Enter email'
+                        onChange={(event) => setUsername(event.target.value)}
+                        value={username}
+                        required
+                    />
+                </div>
+                <br />
+                {/* <label style={{nfontStyle: 'italic' }}>Password</label> */}
+                <div>
+                    <input
+                        style={{
+                            width: "300px",
+                            height: "50px",
+                            paddingLeft: "10px",
+                            paddingTop: "5px",
+                            border: "none",
+                            borderBottom: "1px solid black",
+                            borderRadius: "10px",
+                            boxShadow: "5px 5px 5px 5px rgb(216, 216, 216)"
+                        }}
+                        type='password'
+                        name='password'
+                        placeholder='Enter password'
+                        onChange={(event) => setPassword(event.target.value)}
+                        value={password}
+                        required
+                    />
+                </div>
 
+                <div className={styles.grid}>
                     <button className={styles.card} type='submit'>Login</button>
+                </div>
 
-                    <p style={{ color: 'white', fontStyle: 'italic' }}>Download the app to register: <Link style={{ color: 'yellow'}} href={'https://lnkd.in/eSYF_DfE'} >Android</Link> or <Link style={{ color: 'yellow'}} href={'https://lnkd.in/eWrbYYtc'} >iOS</Link></p>
+                <p style={{ fontStyle: 'italic' }}>Download the app to register: <Link href={'https://lnkd.in/eSYF_DfE'} >Android</Link> or <Link href={'https://lnkd.in/eWrbYYtc'} >iOS</Link></p>
 
-                </form>
-            </div>
+            </form>
+
+            <ToastContainer />
         </div>
 
 
