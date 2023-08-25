@@ -133,7 +133,11 @@ function ItemPage() {
 
                 {/* Button deck */}
                 {/* <button style={{ width: '100px', margin: '10px', backgroundColor: 'green', color: 'white' }} onClick={updateItem}>Update</button> */}
-                <button className={styles.card} onClick={updateItem}>Update</button>
+                
+
+                <div className={styles.buttonDeck}>
+                    <button className={styles.butt} onClick={updateItem}>Update</button>
+                </div>
             </div>
 
 
@@ -141,6 +145,8 @@ function ItemPage() {
             <div className={styles.columnright} >
 
                 {/* item name */}
+                <label>Name: </label>
+                <br />
                 <input
                     style={{
                         width: "300px",
@@ -158,6 +164,8 @@ function ItemPage() {
                 /> <br />
 
                 {/* item qty */}
+                <label>QTY: </label>
+                <br />
                 <input
                     style={{
                         width: "300px",
@@ -175,6 +183,8 @@ function ItemPage() {
                 /> <br />
 
                 {/* item price */}
+                <label>Price: </label>
+                <br />
                 <input
                     style={{
                         width: "300px",
@@ -192,6 +202,8 @@ function ItemPage() {
                 /> <br />
 
                 {/* item purpose */}
+                <label>Purpose: </label>
+                <br />
                 <input
                     style={{
                         width: "300px",

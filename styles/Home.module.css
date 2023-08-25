@@ -61,9 +61,9 @@
     width: 100%;
     display: flex;
     background-color: #ffffff;
-    border: 1px solid black;
+    border-left: 3px solid black;
     justify-content: center;
-    border-radius: 5px;
+    /* border-radius: 5px; */
 }
 
 .logincontainer {
@@ -149,14 +149,56 @@
     line-height: 1.5;
 }
 
-/* .logo {
-    height: 1em;
+
+
+
+
+
+.butt {
+    /* margin-left: 1rem; */
+    flex-basis: 15%;
+    /* position: absolute; */
+    text-align: center;
+    padding: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+    border: 1px solid #eaeaea;
+    /* border-radius: 10px; */
+    transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-.mystyle {
-    font-size: 50px;
+.butt:hover,
+.butt:focus,
+.butt:active {
     color: #0070f3;
-} */
+    border-color: #0070f3;
+}
+
+.butt h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+}
+
+.butt p {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.5;
+}
+
+
+.buttonDeck {
+    /* align-items: center; */
+    /* vertical-align: bottom; */
+    position: absolute;
+    bottom: 20px;
+    background-color: rgb(230, 230, 230);
+    flex: 1;
+    height: 42;
+    margin: 16;
+    padding: 10;
+    border-radius: 10
+}
+
 
 @media (max-width: 600px) {
     .grid {

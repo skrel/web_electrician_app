@@ -224,13 +224,16 @@ function ProjectPage() {
                 <p>Project name: {projNameToDisplay}</p>
 
                 {/* Button deck */}
-                <button className={styles.card} onClick={handleDeleteAllItemsFromFirebase}>Delete All</button>
-                <button className={styles.card} onClick={downloadBlob}>Download</button>
-                <button className={styles.card} onClick={handleSaveItemToFirebase}>Add Item</button>
+                <div className={styles.buttonDeck}>
+                    <button className={styles.butt} onClick={handleDeleteAllItemsFromFirebase}>Delete All</button>
+                    <button className={styles.butt} onClick={downloadBlob}>Download *.csv</button>
+                    <button className={styles.butt} onClick={handleSaveItemToFirebase}>Add Single Item</button>
+                    <button className={styles.butt} onClick={handleSaveItemToFirebase}>Import Items</button>
+                </div>
             </div>
 
 
-            {/* LEFT */}
+            {/* RIGHT */}
             <div className={styles.columnright} >
                 <div className={styles.flexRowLocal}>
                     <label>Project Name: </label>
@@ -253,23 +256,23 @@ function ProjectPage() {
                     <button style={{ display: editProjName ? "block" : "none" }} onClick={cancelProjectNameChange}>Cancel Change</button>
                 </div>
 
-
                 <br />
                 <div>
                     {projectItems.map(item => {
                         return (
                             <div className={styles.projectitem} key={item.key}>
                                 <img src={item.image} width={100} height={100} />
-                                <div style={{ width: '100%', paddingLeft: '5px' }}>
-                                    <p style={{ lineHeight: '20%' }}>{item.key}. {item.name}</p>
-                                    <p style={{ lineHeight: '20%' }}>QTY: {item.qty}</p>
-                                    <p style={{ lineHeight: '20%' }}>Purpose: {item.purpose}</p>
-                                    <p style={{ lineHeight: '20%' }}>Price: {item.price}</p>
+                                <div style={{ width: '100%', paddingLeft: '15px' }}>
+                                    <p style={{ lineHeight: '20%' }}>Item {item.key}:</p>
+                                    <p style={{ lineHeight: '20%', paddingLeft: '15px' }}>Name: {item.name}</p>
+                                    <p style={{ lineHeight: '20%', paddingLeft: '15px' }}>QTY: {item.qty}</p>
+                                    <p style={{ lineHeight: '20%', paddingLeft: '15px' }}>Purpose: {item.purpose}</p>
+                                    <p style={{ lineHeight: '20%', paddingLeft: '15px' }}>Price, $: {item.price}</p>
                                 </div>
 
-                                <div className={styles.columnright}>
+                                {/* <div className={styles.columnright}> */}
                                     <Link
-                                        className={styles.card}
+                                        className={styles.butt}
                                         href={{
                                             pathname: '/ItemPage',
                                             query: {
@@ -284,8 +287,8 @@ function ProjectPage() {
                                     >
                                         Edit
                                     </Link>
-                                    <button className={styles.card} onClick={() => handleDeleteItemFromFirebase(item)}>Delete</button>
-                                </div>
+                                    <button className={styles.butt} onClick={() => handleDeleteItemFromFirebase(item)}>Delete</button>
+                                {/* </div> */}
                             </div>
                         )
                     }

@@ -91,14 +91,23 @@ function MyProfile() {
                 <h2>My Profile</h2>
                 <p>User name: {auth.currentUser?.email}</p>
 
+                
+
                 {/* Button deck */}
-                <button className={styles.card} onClick={signOutUser}>Sign Out</button>
-                <button className={styles.card} onClick={addNewProject}>+ New Prj</button>
+                <div className={styles.buttonDeck}>
+                    <button className={styles.butt} onClick={signOutUser}>Sign Out</button>
+                    <button className={styles.butt} onClick={addNewProject}>+ New Prj</button>
+                    <Link className={styles.butt} href={{pathname: '/index',query: {}}}>Configurator</Link>
+                </div>
             </div>
 
 
             {/* LEFT */}
             <div className={styles.columnright} >
+
+                {/* TODO: put two columns with CHARTS here */}
+
+
                 {listProject.map(project => <div className={styles.project} key={project.id}>
                     <Link
                         style={{ color: 'black', fontSize: 20, margin: 10, padding: 10, textDecoration: 'none', width: '100%', textAlign: 'center', }}
